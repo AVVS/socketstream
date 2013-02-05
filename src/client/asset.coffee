@@ -18,7 +18,8 @@ pro = uglifyjs.uglify
 
 module.exports = (ss, options) ->
 
-  loadFile = (dir, fileName, type, options, cb) ->
+  loadFile = (dir, fileName, type, options, context, cb) ->
+    cb = context if typeof context is 'function'
     dir = pathlib.join(ss.root, dir)
     path = pathlib.join(dir, fileName)
     extension = pathlib.extname(path)
@@ -27,7 +28,7 @@ module.exports = (ss, options) ->
     throw new Error("Invalid path. Request for #{path} must not live outside #{dir}") if path.substr(0, dir.length) != dir
     throw new Error("Unsupported file extension '.#{extension}' when we were expecting some type of #{type.toUpperCase()} file. Please provide a formatter for #{path.substring(root.length)} or move it to /client/static") unless formatter
     throw new Error("Unable to render '#{fileName}' as this appears to be a #{formatter.assetType.toUpperCase()} file. Expecting some type of #{type.toUpperCase()} file in #{dir.substr(root.length)} instead") unless formatter.assetType == type
-    formatter.compile(path.replace(/\\/g, '/'), options, cb) # replace '\' with '/' to support Windows
+    formatter.compile(path.replace(/\\/g, '/'), options, context, cb) # replace '\' with '/' to support Windows
 
   # Public
 
@@ -45,8 +46,9 @@ module.exports = (ss, options) ->
   css: (path, opts, cb) ->
     loadFile(options.dirs.css, path, 'css', opts, cb)
 
-  html: (path, opts, cb) ->
-    loadFile(options.dirs.views, path, 'html', opts, cb)
+  html: (path, opts, context, cb) ->
+    cb = context if typeof context is 'function'
+    loadFile(options.dirs.views, path, 'html', opts, context, cb)
 
 
 # PRIVATE

@@ -6,8 +6,8 @@ pathlib = require('path')
 magicPath = require('./magic_path')
 wrap = require('./wrap')
 
-module.exports = (ss, client, options, cb) ->
-
+module.exports = (ss, client, options, context, cb) ->
+  cb = context if typeof context is 'function'  
   templateEngine = require('./template_engine')(ss)
 
   # When packing assets the default path to the CSS or JS file can be overridden 
@@ -94,7 +94,7 @@ module.exports = (ss, client, options, cb) ->
 
   # Output HTML
   htmlOptions = {headers: includes.join(''), compress: options.packedAssets, filename: client.paths.view}
-  asset.html(client.paths.view, htmlOptions, cb)
+  asset.html(client.paths.view, htmlOptions, context, cb)
 
 
   

@@ -21,7 +21,7 @@ res = http.ServerResponse.prototype
 module.exports = (ss, clients, options) ->
 
   # Append the 'serveClient' method to the HTTP Response object
-  res.serveClient = (name) ->
+  res.serveClient = (name, context) ->
 
     self = this
 
@@ -50,7 +50,7 @@ module.exports = (ss, clients, options) ->
 
       # Generate View from scratch in development 
       else
-        view(ss, client, options, sendHTML)
+        view(ss, client, options, context, sendHTML)
 
     # Never send stack trace to the browser, log it to the terminal instead
     catch e
