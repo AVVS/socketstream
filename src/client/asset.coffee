@@ -19,7 +19,9 @@ pro = uglifyjs.uglify
 module.exports = (ss, options) ->
 
   loadFile = (dir, fileName, type, options, context, cb) ->
-    cb = context if typeof context is 'function'
+    cb = context if typeof context is 'function'    
+    context = cb if typeof cb is 'function' and context is undefined
+    
     dir = pathlib.join(ss.root, dir)
     path = pathlib.join(dir, fileName)
     extension = pathlib.extname(path)
