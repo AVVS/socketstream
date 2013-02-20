@@ -63,14 +63,16 @@ module.exports = (ss) ->
       # Try and guess the correct formatter to use BEFORE the content is sent to the template engine
       extension = pathlib.extname(path)
       extension = extension.substring(1) if extension
-      formatter = (f = ss.client.formatters[extension]) && f.assetType == 'html' && f
+      
+      
+      #formatter = (f = ss.client.formatters[extension]) && f.assetType == 'html' && f
 
       # Optionally allow engine to select a different formatter
       # This is useful for edge cases where .jade files should be compiled by the engine, not the formatter
-      formatter = engine.selectFormatter(path, ss.client.formatters, formatter) if engine.selectFormatter
+      #formatter = engine.selectFormatter(path, ss.client.formatters, formatter) if engine.selectFormatter
 
       # If we still don't have a formatter by this point, default to 'HTML' (echo/bypass)
-      formatter ||= ss.client.formatters['html']
+      formatter = ss.client.formatters['html'] #always use html
 
       # Use the formatter to pre-process the template before passing it to the engine
       try
